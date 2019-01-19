@@ -5,6 +5,7 @@ import './polyfill';
 import './g2';
 // import { browserHistory } from 'dva/router';
 import './index.less';
+import './startup-cc';
 
 // 1. Initialize
 const app = dva({

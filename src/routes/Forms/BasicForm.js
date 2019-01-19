@@ -10,25 +10,39 @@ const FormItem = Form.Item;
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
+import cc from 'react-control-center';
 
-@connect(state => ({
-  submitting: state.form.regularFormSubmitting,
-}))
+// @connect(state => ({
+//   submitting: state.form.regularFormSubmitting,
+// }))
+@cc.connect(
+  'BasicForms',
+  { 'form/regularFormSubmitting': 'submitting' },
+  { extendInputClass: false }
+)
 @Form.create()
 export default class BasicForms extends PureComponent {
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        this.props.dispatch({
-          type: 'form/submitRegularForm',
+        // this.props.dispatch({
+        //   type: 'form/submitRegularForm',
+        //   payload: values,
+        // });
+        this.props.$$dispatch({
+          module: 'form',
+          type: 'submitRegularForm',
           payload: values,
         });
       }
     });
   }
   render() {
-    const { submitting } = this.props;
+    console.log('%c@@@ BasicForm ', 'color:green;border:1px solid green;');
+    // const { submitting } = this.props;
+    const { submitting } = this.props.$$propState;
+
     const { getFieldDecorator, getFieldValue } = this.props.form;
 
     const formItemLayout = {

@@ -5,6 +5,7 @@ import BlankLayout from '../layouts/BlankLayout';
 import Analysis from '../routes/Dashboard/Analysis';
 import Monitor from '../routes/Dashboard/Monitor';
 import Workplace from '../routes/Dashboard/Workplace';
+import CCStage from '../routes/Dashboard/CCStage';
 
 import TableList from '../routes/List/TableList';
 import CoverCardList from '../routes/List/CoverCardList';
@@ -54,6 +55,10 @@ const data = [{
       name: '工作台',
       path: 'workplace',
       component: Workplace,
+    }, {
+      name: 'CC的舞台',
+      path: 'cc-stage',
+      component: CCStage,
     }],
   }, {
     name: '表单页',

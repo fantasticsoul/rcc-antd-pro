@@ -1,5 +1,12 @@
 English | [简体中文](./README.zh-CN.md)
 
+# Ant Design Pro Powered by [react-control-center](https://github.com/fantasticsoul/react-control-center)
+###be attention! to prove [cc](https://github.com/fantasticsoul/react-control-center) is very progressive and flexible, I just change to route component to cc, and it works still perfectly, they are `routes/Dashboard/Analysis.js` and `routes/Forms/Basic.js`.
+---
+### and I add a new route component `routes/Dashboard/CCState.js` to show cc's powerful ability, this component will been updated continuously, just like [my quick start demo for cc](https://github.com/fantasticsoul/rcc-simple-demo), it will give you more wonderful case soon.
+---
+### hope you guys take a moment to understand [react-control-center](https://github.com/fantasticsoul/react-control-center) and explore it more funny style
+
 # Ant Design Pro
 
 [![](https://img.shields.io/travis/ant-design/ant-design-pro.svg?style=flat-square)](https://travis-ci.org/ant-design/ant-design-pro) [![Build status](https://ci.appveyor.com/api/projects/status/67fxu2by3ibvqtat/branch/master?svg=true)](https://ci.appveyor.com/project/afc163/ant-design-pro/branch/master)  [![Gitter](https://badges.gitter.im/ant-design/ant-design-pro.svg)](https://gitter.im/ant-design/ant-design-pro?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)

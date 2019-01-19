@@ -1,5 +1,12 @@
 [English](./README.md) | 简体中文
 
+# Ant Design Pro Powered by [react-control-center](https://github.com/fantasticsoul/react-control-center)
+###注意哦! 此项目只是为了证明 [cc](https://github.com/fantasticsoul/react-control-center) 的弱入侵性和灵活性，我仅仅把两个路由级别的组件交给cc处理, ant pro任然完美工作起立了, 这两个路由文件是 `routes/Dashboard/Analysis.js` 和 `routes/Forms/Basic.js`.
+---
+### 同时我也新增了一个路由组件 `routes/Dashboard/CCState.js` 来展示cc强大能力, 这个组件还没有彻底写完，将会被持续更新的, 就像 [我为cc专门写的引导示例一样](https://github.com/fantasticsoul/rcc-simple-demo)，将会很快会为大家带来更多的精彩演示
+---
+### 希望我亲爱的朋友们花一点时间了解[react-control-center](https://github.com/fantasticsoul/react-control-center)并探索它更多有趣的玩法
+
 # Ant Design Pro
 
 [![](https://img.shields.io/travis/ant-design/ant-design-pro.svg?style=flat-square)](https://travis-ci.org/ant-design/ant-design-pro) [![Build status](https://ci.appveyor.com/api/projects/status/67fxu2by3ibvqtat/branch/master?svg=true)](https://ci.appveyor.com/project/afc163/ant-design-pro/branch/master)  [![Gitter](https://badges.gitter.im/ant-design/ant-design-pro.svg)](https://gitter.im/ant-design/ant-design-pro?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)

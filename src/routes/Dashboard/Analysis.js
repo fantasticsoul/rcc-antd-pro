@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'dva';
+// import { connect } from 'dva';
 import { Row, Col, Icon, Card, Tabs, Table, Radio, DatePicker, Tooltip, Menu, Dropdown } from 'antd';
 import numeral from 'numeral';
 import {
@@ -8,6 +8,7 @@ import {
 import Trend from '../../components/Trend';
 import NumberInfo from '../../components/NumberInfo';
 import { getTimeDistance } from '../../utils/utils';
+import cc from 'react-control-center';
 
 import styles from './Analysis.less';
 
@@ -22,9 +23,14 @@ for (let i = 0; i < 7; i += 1) {
   });
 }
 
-@connect(state => ({
-  chart: state.chart,
-}))
+// @connect(({ chart, loading }) => ({
+//   chart,
+//   loading: loading.effects['chart/fetch'],
+// }))
+@cc.connect('Analysis', {
+  'chart/*': '',
+  'form/*': '', // this is redundant here, just for show isPropStateModuleMode's effect
+}, { isPropStateModuleMode: true })
 export default class Analysis extends Component {
   state = {
     loading: true,
@@ -34,16 +40,20 @@ export default class Analysis extends Component {
   }
 
   componentDidMount() {
-    this.props.dispatch({
-      type: 'chart/fetch',
+    this.$$dispatch({
+      module: 'chart', type: 'fetch'
     }).then(() => this.setState({ loading: false }));
+    // this.props.dispatch({
+    //   type: 'chart/fetch',
+    // }).then(() => this.setState({ loading: false }));
   }
 
   componentWillUnmount() {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'chart/clear',
-    });
+    // const { dispatch } = this.props;
+    // dispatch({
+    //   type: 'chart/clear',
+    // });
+    // this.$$dispatch({ module: 'chart', type: 'clear' });
   }
 
   handleChangeSalesType = (e) => {
@@ -63,9 +73,8 @@ export default class Analysis extends Component {
       rangePickerValue,
     });
 
-    this.props.dispatch({
-      type: 'chart/fetchSalesData',
-    });
+    // this.props.dispatch({ type: 'chart/fetchSalesData'});
+    this.$$dispatch({ module: 'chart', type: 'fetchSalesData' });
   }
 
   selectDate = (type) => {
@@ -73,9 +82,8 @@ export default class Analysis extends Component {
       rangePickerValue: getTimeDistance(type),
     });
 
-    this.props.dispatch({
-      type: 'chart/fetchSalesData',
-    });
+    // this.props.dispatch({ type: 'chart/fetchSalesData' });
+    this.$$dispatch({ module: 'chart', type: 'fetchSalesData' });
   }
 
   isActive(type) {
@@ -91,7 +99,7 @@ export default class Analysis extends Component {
 
   render() {
     const { rangePickerValue, salesType, currentTabKey, loading } = this.state;
-    const { chart } = this.props;
+    console.log('%c@@@ Analysis !!!', 'color:green;border:1px solid green;');
     const {
       visitData,
       visitData2,
@@ -102,7 +110,8 @@ export default class Analysis extends Component {
       salesTypeData,
       salesTypeDataOnline,
       salesTypeDataOffline,
-    } = chart;
+    } = this.$$propState.chart;
+    // } = this.props.chart;
 
     const salesPieData = salesType === 'all' ?
       salesTypeData
