@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Button, Row, Col, Icon, Card, Tabs, Table, Radio, DatePicker, Tooltip, Menu, Dropdown } from 'antd';
+import { Button, Row, Col, Icon, Card, Tabs, Table, Radio, DatePicker, Tooltip, Menu, Dropdown } from 'antd';
 import {
   ChartCard, yuan, MiniArea, MiniBar, MiniProgress, Field, Bar, Pie, TimelineChart,
 } from '../../components/Charts';
@@ -25,37 +25,28 @@ function getIconGroup() {
 }
 const iconGroup = getIconGroup();
 
-@cc.connect('CCStage', {
-  'chart/*': '',
-})
-export default class Analysis extends Component {
+@cc.connect('CcStage', { 'chart/*': '' }, { module: 'ccStage', sharedStateKeys:'*', isSingle:true })
+export default class CcStage extends Component {
 
   state = {
     loading: false,
     salesType: 'all',
-    currentTabKey: '',
-    rangePickerValue: [],
   }
 
-  componentDidMount(){
-    this.$$on('foo', (p1, p2)=>{
+  componentDidMount() {
+    this.$$on('foo', (p1, p2) => {
       alert(`receive ${p1}, ${p2}`);
     });
   }
 
-  emitFoo = ()=>{
+  emitFoo = () => {
     this.$$emit('foo', 'emit foo!!', Date.now());
   }
 
   render() {
-    const { rangePickerValue, salesType, currentTabKey, loading } = this.state;
+    console.log('%c@@@ CcStage', 'color:green;border:1px solid green;');
+    const { salesType, loading, inputValue } = this.state;
     const {
-      visitData,
-      visitData2,
-      salesData,
-      searchData,
-      offlineData,
-      offlineChartData,
       salesTypeData,
       salesTypeDataOnline,
       salesTypeDataOffline,
@@ -68,6 +59,7 @@ export default class Analysis extends Component {
 
     return (
       <div>
+        <input data-cct="changeInputValue" onChange={this.$$domDispatch} value={inputValue} />
         <Button onClick={this.emitFoo}>emit</Button>
         <Row>
           <Col xl={12} lg={24} md={24} sm={24} xs={24}>

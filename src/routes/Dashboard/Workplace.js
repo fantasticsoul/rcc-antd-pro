@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import moment from 'moment';
 import { connect } from 'dva';
+import cc from 'react-control-center';
 import { Link } from 'dva/router';
 import { Row, Col, Card, List, Avatar } from 'antd';
 
@@ -70,36 +71,49 @@ const members = [
   },
 ];
 
-@connect(state => ({
-  project: state.project,
-  activities: state.activities,
-  chart: state.chart,
-}))
+// @connect(state => ({
+//   project: state.project,
+//   activities: state.activities,
+//   chart: state.chart,
+// }))
+@cc.connect('Workplace', {
+  'project/*': '',
+  'activities/*': '',
+  'chart/*': '',
+}, { isSingle: true, isPropStateModuleMode: true })
 export default class Workplace extends PureComponent {
   componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'project/fetchNotice',
-    });
-    dispatch({
-      type: 'activities/fetchList',
-    });
-    dispatch({
-      type: 'chart/fetch',
-    });
+    // const { dispatch } = this.props;
+    // dispatch({
+    //   type: 'project/fetchNotice',
+    // });
+    // dispatch({
+    //   type: 'activities/fetchList',
+    // });
+    // dispatch({
+    //   type: 'chart/fetch',
+    // });
+    this.$$dispatch({ module: 'project', type: 'fetchNotice' });
+    this.$$dispatch({ module: 'activities', type: 'fetchList' });
+    this.$$dispatch({ module: 'chart', type: 'fetch' });
   }
 
   componentWillUnmount() {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'chart/clear',
-    });
+    // const { dispatch } = this.props;
+    // dispatch({
+    //   type: 'chart/clear',
+    // });
+    this.$$dispatch({ module: 'chart', type: 'clear' });
   }
 
   renderActivities() {
+    // const {
+    //   activities: { list },
+    // } = this.props;
     const {
       activities: { list },
-    } = this.props;
+    } = this.$$propState;
+
     return list.map((item) => {
       const events = item.template.split(/@\{([^{}]*)\}/gi).map((key) => {
         if (item[key]) {
@@ -130,11 +144,13 @@ export default class Workplace extends PureComponent {
   }
 
   render() {
+    console.log('%c@@@ Workplace', 'color:green;border:1px solid green;');
     const {
       project: { loading: projectLoading, notice },
       activities: { loading: activitiesLoading },
       chart: { radarData },
-    } = this.props;
+      // } = this.props;
+    } = this.$$propState;
 
     const pageHeaderContent = (
       <div className={styles.pageHeaderContent}>
@@ -229,7 +245,7 @@ export default class Workplace extends PureComponent {
               bodyStyle={{ padding: 0 }}
             >
               <EditableLinkGroup
-                onAdd={() => {}}
+                onAdd={() => { }}
                 links={links}
                 linkElement={Link}
               />

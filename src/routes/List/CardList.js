@@ -1,26 +1,30 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
+import cc from 'react-control-center';
 import { Card, Button, Icon, List } from 'antd';
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
 import styles from './CardList.less';
 
-@connect(state => ({
-  list: state.list,
-}))
+// @connect(state => ({
+//   list: state.list,
+// }))
+@cc.connect('CardList', { 'list/*': '' }, { module: 'list', isSingle:true })
 export default class CardList extends PureComponent {
   componentDidMount() {
-    this.props.dispatch({
-      type: 'list/fetch',
-      payload: {
-        count: 8,
-      },
-    });
+    // this.props.dispatch({
+    //   type: 'list/fetch',
+    //   payload: {
+    //     count: 8,
+    //   },
+    // });
+    this.$$dispatch({ type: 'fetch', payload: { count: 8 } });
   }
 
   render() {
-    const { list: { list, loading } } = this.props;
+    // const { list: { list, loading } } = this.props;
+    const { list, loading }  = this.$$propState;
 
     const content = (
       <div className={styles.pageHeaderContent}>
@@ -74,7 +78,7 @@ export default class CardList extends PureComponent {
                   />
                 </Card>
               </List.Item>
-              ) : (
+            ) : (
                 <List.Item>
                   <Button type="dashed" className={styles.newButton}>
                     <Icon type="plus" /> 新增产品

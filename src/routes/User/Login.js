@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
+import cc from 'react-control-center';
 import { routerRedux, Link } from 'dva/router';
 import { Form, Input, Tabs, Button, Icon, Checkbox, Row, Col, Alert } from 'antd';
 import styles from './Login.less';
@@ -7,9 +8,10 @@ import styles from './Login.less';
 const FormItem = Form.Item;
 const { TabPane } = Tabs;
 
-@connect(state => ({
-  login: state.login,
-}))
+// @connect(state => ({
+//   login: state.login,
+// }))
+@cc.connect('Login', { 'login/*': '' }, { module: 'login', isSingle: true, extendInputClass: false })
 @Form.create()
 export default class Login extends Component {
   state = {
@@ -18,8 +20,11 @@ export default class Login extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.login.status === 'ok') {
-      this.props.dispatch(routerRedux.push('/'));
+    // if (nextProps.login.status === 'ok') {
+    //   this.props.dispatch(routerRedux.push('/'));
+    // }
+    if (nextProps.$$propState.status === 'ok') {
+      __bindedDvaDispatch__(routerRedux.push('/'));
     }
   }
 
@@ -51,8 +56,12 @@ export default class Login extends Component {
     this.props.form.validateFields({ force: true },
       (err, values) => {
         if (!err) {
-          this.props.dispatch({
-            type: `login/${type}Submit`,
+          // this.props.dispatch({
+          //   type: `login/${type}Submit`,
+          //   payload: values,
+          // });
+          this.props.$$dispatch({
+            type: `${type}Submit`,
             payload: values,
           });
         }
@@ -72,7 +81,8 @@ export default class Login extends Component {
   }
 
   render() {
-    const { form, login } = this.props;
+    // const { form, login } = this.props;
+    const { form, $$propState: login } = this.props;
     const { getFieldDecorator } = form;
     const { count, type } = this.state;
     return (

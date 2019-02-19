@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
+import cc from 'react-control-center';
 import { Row, Col, Card, Form, Input, Select, Icon, Button, Dropdown, Menu, InputNumber, DatePicker, Modal, message } from 'antd';
 import StandardTable from '../../components/StandardTable';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
@@ -10,9 +11,14 @@ const FormItem = Form.Item;
 const { Option } = Select;
 const getValue = obj => Object.keys(obj).map(key => obj[key]).join(',');
 
-@connect(state => ({
-  rule: state.rule,
-}))
+// @connect(state => ({
+//   rule: state.rule,
+// }))
+
+// 注意，cc的extendInputClass默认值是true，所以cc优先以反向继承的方式包裹TableList
+// 但是这里用了多层装饰器且connect在create之前，所以cc的connect要设置extendInputClass为false，让cc以属性代理的方式包裹TableList，否则@Form.create()会失效
+// 以属性代理的方式包裹TableList后，组件内的$$dispatch等cc注入的方法都是在props获得了
+@cc.connect('TableList', { 'rule/*': '' }, { module:'rule', extendInputClass: false })
 @Form.create()
 export default class TableList extends PureComponent {
   state = {
@@ -24,10 +30,11 @@ export default class TableList extends PureComponent {
   };
 
   componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'rule/fetch',
-    });
+    // const { dispatch } = this.props;
+    // dispatch({
+    //   type: 'rule/fetch',
+    // });
+    this.props.$$dispatch({ type: 'fetch' });
   }
 
   handleStandardTableChange = (pagination, filtersArg, sorter) => {
@@ -50,19 +57,21 @@ export default class TableList extends PureComponent {
       params.sorter = `${sorter.field}_${sorter.order}`;
     }
 
-    dispatch({
-      type: 'rule/fetch',
-      payload: params,
-    });
+    // dispatch({
+    //   type: 'rule/fetch',
+    //   payload: params,
+    // });
+    this.props.$$dispatch({ type: 'fetch', payload: params });
   }
 
   handleFormReset = () => {
     const { form, dispatch } = this.props;
     form.resetFields();
-    dispatch({
-      type: 'rule/fetch',
-      payload: {},
-    });
+    // dispatch({
+    //   type: 'rule/fetch',
+    //   payload: {},
+    // });
+    this.props.$$dispatch({ type: 'fetch', payload: {} });
   }
 
   toggleForm = () => {
@@ -79,17 +88,24 @@ export default class TableList extends PureComponent {
 
     switch (e.key) {
       case 'remove':
-        dispatch({
-          type: 'rule/remove',
-          payload: {
+        // dispatch({
+        //   type: 'rule/remove',
+        //   payload: {
+        //     no: selectedRows.map(row => row.no).join(','),
+        //   },
+        //   callback: () => {
+        //     this.setState({
+        //       selectedRows: [],
+        //     });
+        //   },
+        // });
+        this.props.$$dispatch({
+          type: 'remove', payload: {
             no: selectedRows.map(row => row.no).join(','),
-          },
-          callback: () => {
-            this.setState({
-              selectedRows: [],
-            });
-          },
-        });
+          }
+        }).then(() => this.setState({
+          selectedRows: [],
+        }));
         break;
       default:
         break;
@@ -105,7 +121,8 @@ export default class TableList extends PureComponent {
   handleSearch = (e) => {
     e.preventDefault();
 
-    const { dispatch, form } = this.props;
+    // const { dispatch, form } = this.props;
+    const { $$dispatch, form } = this.props;
 
     form.validateFields((err, fieldsValue) => {
       if (err) return;
@@ -119,10 +136,11 @@ export default class TableList extends PureComponent {
         formValues: values,
       });
 
-      dispatch({
-        type: 'rule/fetch',
-        payload: values,
-      });
+      // dispatch({
+      //   type: 'rule/fetch',
+      //   payload: values,
+      // });
+      $$dispatch({ type: 'fetch', payload: values });
     });
   }
 
@@ -139,16 +157,27 @@ export default class TableList extends PureComponent {
   }
 
   handleAdd = () => {
-    this.props.dispatch({
-      type: 'rule/add',
+    // this.props.dispatch({
+    //   type: 'rule/add',
+    //   payload: {
+    //     description: this.state.addInputValue,
+    //   },
+    // });
+    // message.success('添加成功');
+    // this.setState({
+    //   modalVisible: false,
+    // });
+
+    this.props.$$dispatch({
+      type: 'add',
       payload: {
         description: this.state.addInputValue,
       },
-    });
-
-    message.success('添加成功');
-    this.setState({
-      modalVisible: false,
+    }).then(() => {
+      message.success('添加成功');
+      this.setState({
+        modalVisible: false,
+      });
     });
   }
 
@@ -265,7 +294,8 @@ export default class TableList extends PureComponent {
   }
 
   render() {
-    const { rule: { loading: ruleLoading, data } } = this.props;
+    // const { rule: { loading: ruleLoading, data } } = this.props;
+    const { loading: ruleLoading, data } = this.props.$$propState;
     const { selectedRows, modalVisible, addInputValue } = this.state;
 
     const menu = (

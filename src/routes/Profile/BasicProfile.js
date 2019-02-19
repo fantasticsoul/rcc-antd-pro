@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
+import cc from 'react-control-center';
 import { Card, Badge, Table, Divider } from 'antd';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import DescriptionList from '../../components/DescriptionList';
@@ -32,20 +33,30 @@ const progressColumns = [{
   key: 'cost',
 }];
 
-@connect(state => ({
-  profile: state.profile,
-}))
+// @connect(state => ({
+//   profile: state.profile,
+// }))
+// @cc.register('BasicProfile', { module: 'profile', sharedStateKeys: '*' })
+@cc.connect('BasicProfile', { 'profile/*': '' }, { module: 'profile' })
 export default class BasicProfile extends Component {
   componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'profile/fetchBasic',
-    });
+    // const { dispatch } = this.props;
+    // dispatch({
+    //   type: 'profile/fetchBasic',
+    // });
+    this.$$dispatch({ type: 'fetchBasic' });
   }
 
   render() {
-    const { profile } = this.props;
-    const { basicGoods, basicProgress, basicLoading } = profile;
+    // const { profile } = this.props;
+    // const { basicGoods, basicProgress, basicLoading } = profile;
+
+    // 基于@cc.register绑定state，
+    // const { basicGoods, basicProgress, basicLoading } = this.state;
+
+    // 基于cc.connect绑定state，从$$propState获取最新的state
+    const { basicGoods, basicProgress, basicLoading } = this.$$propState;
+
     let goodsData = [];
     if (basicGoods.length) {
       let num = 0;

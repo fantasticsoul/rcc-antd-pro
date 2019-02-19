@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Debounce from 'lodash-decorators/debounce';
-import { connect } from 'dva';
+// import { connect } from 'dva';
+import cc from 'react-control-center';
 import { Button, Menu, Dropdown, Icon, Row, Col, Steps, Card, Popover, Badge, Table, Tooltip, Divider } from 'antd';
 import classNames from 'classnames';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
@@ -139,9 +140,10 @@ const columns = [{
   key: 'memo',
 }];
 
-@connect(state => ({
-  profile: state.profile,
-}))
+// @connect(state => ({
+//   profile: state.profile,
+// }))
+@cc.connect('AdvancedProfile', { 'profile/*': '' }, { module: 'profile' })
 export default class AdvancedProfile extends Component {
   state = {
     operationkey: 'tab1',
@@ -149,10 +151,11 @@ export default class AdvancedProfile extends Component {
   }
 
   componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'profile/fetchAdvanced',
-    });
+    // const { dispatch } = this.props;
+    // dispatch({
+    //   type: 'profile/fetchAdvanced',
+    // });
+    this.$$dispatch({ type: 'fetchAdvanced' });
 
     this.setStepDirection();
     window.addEventListener('resize', this.setStepDirection);
@@ -182,9 +185,11 @@ export default class AdvancedProfile extends Component {
   }
 
   render() {
-    const { stepDirection } = this.state;
-    const { profile } = this.props;
-    const { advancedLoading, advancedOperation1, advancedOperation2, advancedOperation3 } = profile;
+    // const { stepDirection } = this.state;
+    // const { profile } = this.props;
+    // const { advancedLoading, advancedOperation1, advancedOperation2, advancedOperation3 } = profile;
+
+    const { advancedLoading, advancedOperation1, advancedOperation2, advancedOperation3, stepDirection } = this.$$propState;
     const contentList = {
       tab1: <Table
         pagination={false}
@@ -242,7 +247,7 @@ export default class AdvancedProfile extends Component {
                   <Icon style={{ color: 'rgba(0, 0, 0, 0.43)', marginLeft: 4 }} type="info-circle-o" />
                 </Tooltip>
               </span>
-              }
+            }
             >
               725
             </Description>

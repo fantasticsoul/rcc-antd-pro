@@ -64,7 +64,8 @@ export default {
   },
 
   subscriptions: {
-    setup({ history }) {
+    setup({ history, dispatch }) {
+      window.__bindedDvaDispatch__ = dispatch;
       // Subscribe history(url) change, trigger `load` action if pathname is `/`
       return history.listen(({ pathname, search }) => {
         if (typeof window.ga !== 'undefined') {

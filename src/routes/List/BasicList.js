@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import moment from 'moment';
 import { connect } from 'dva';
+import cc from 'react-control-center';
 import { List, Card, Row, Col, Radio, Input, Progress, Button, Icon, Dropdown, Menu, Avatar } from 'antd';
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
@@ -11,21 +12,24 @@ const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 const { Search } = Input;
 
-@connect(state => ({
-  list: state.list,
-}))
+// @connect(state => ({
+//   list: state.list,
+// }))
+@cc.register('BasicList', { module: 'list', sharedStateKeys: '*', isSingle: true })
 export default class BasicList extends PureComponent {
   componentDidMount() {
-    this.props.dispatch({
-      type: 'list/fetch',
-      payload: {
-        count: 5,
-      },
-    });
+    // this.props.dispatch({
+    //   type: 'list/fetch',
+    //   payload: {
+    //     count: 5,
+    //   },
+    // });
+    this.$$dispatch({ type: 'fetch', payload: { count: 5 } });
   }
 
   render() {
-    const { list: { list, loading } } = this.props;
+    // const { list: { list, loading } } = this.props;
+    const { list, loading } = this.state;
 
     const Info = ({ title, value, bordered }) => (
       <div className={styles.headerInfo}>

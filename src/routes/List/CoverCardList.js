@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import moment from 'moment';
 import { connect } from 'dva';
+import cc from 'react-control-center';
 import { routerRedux } from 'dva/router';
 import { Row, Col, Form, Card, Select, List, Input } from 'antd';
 
@@ -10,23 +11,26 @@ import TagSelect from '../../components/TagSelect';
 import AvatarList from '../../components/AvatarList';
 
 import styles from './CoverCardList.less';
+import { Store } from 'redux';
 
 const { Option } = Select;
 const FormItem = Form.Item;
 
 /* eslint react/no-array-index-key: 0 */
+@cc.connect('CoverCardList', { 'list/*': '' }, { module: 'list', isSingle: true, extendInputClass: false })
 @Form.create()
-@connect(state => ({
-  list: state.list,
-}))
+// @connect(state => ({
+//   list: state.list,
+// }))
 export default class CoverCardList extends PureComponent {
   componentDidMount() {
-    this.props.dispatch({
-      type: 'list/fetch',
-      payload: {
-        count: 8,
-      },
-    });
+    // this.props.dispatch({
+    //   type: 'list/fetch',
+    //   payload: {
+    //     count: 8,
+    //   },
+    // });
+    this.props.$$dispatch({ type: 'fetch', payload: { count: 8 } });
   }
 
   handleFormSubmit = () => {
@@ -36,10 +40,16 @@ export default class CoverCardList extends PureComponent {
       form.validateFields((err) => {
         if (!err) {
           // eslint-disable-next-line
-          dispatch({
-            type: 'list/fetch',
+          // dispatch({
+          //   type: 'list/fetch',
+          //   payload: {
+          //     count: 8,
+          //   },
+          // });
+          this.props.$$dispatch({
+            type: 'fetch',
             payload: {
-              count: 8,
+              count: 2,
             },
           });
         }
@@ -51,13 +61,16 @@ export default class CoverCardList extends PureComponent {
     const { dispatch } = this.props;
     switch (key) {
       case 'doc':
-        dispatch(routerRedux.push('/list/search'));
+        // dispatch(routerRedux.push('/list/search'));
+        __bindedDvaDispatch__(routerRedux.push('/list/search'));
         break;
       case 'app':
-        dispatch(routerRedux.push('/list/filter-card-list'));
+        // dispatch(routerRedux.push('/list/filter-card-list'));
+        __bindedDvaDispatch__(routerRedux.push('/list/filter-card-list'));
         break;
       case 'project':
-        dispatch(routerRedux.push('/list/cover-card-list'));
+        // dispatch(routerRedux.push('/list/cover-card-list'));
+        __bindedDvaDispatch__(routerRedux.push('/list/cover-card-list'));
         break;
       default:
         break;
@@ -65,8 +78,10 @@ export default class CoverCardList extends PureComponent {
   }
 
   render() {
-    const { list: { list = [], loading }, form } = this.props;
-    const { getFieldDecorator } = form;
+    console.log('%c@@@ CoverCardList', 'color:green;border:1px solid green;');
+    // const { list: { list = [], loading }, form } = this.props;
+    const { list = [], loading } = this.props.$$propState;
+    const { getFieldDecorator } = this.props.form;
 
     const cardList = list ? (
       <List

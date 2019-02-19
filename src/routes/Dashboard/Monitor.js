@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
+import cc from 'react-control-center';
 import { Row, Col, Card, Tooltip } from 'antd';
 import numeral from 'numeral';
 
@@ -12,19 +13,24 @@ import styles from './Monitor.less';
 
 const targetTime = new Date().getTime() + 3900000;
 
-@connect(state => ({
-  monitor: state.monitor,
-}))
+// @connect(state => ({
+//   monitor: state.monitor,
+// }))
+@cc.register('Monitor', { module: 'monitor', sharedStateKeys: '*', isSingle: true })
 export default class Monitor extends PureComponent {
   componentDidMount() {
-    this.props.dispatch({
-      type: 'monitor/fetchTags',
-    });
+    // this.props.dispatch({
+    //   type: 'monitor/fetchTags',
+    // });
+    this.$$dispatch({ type: 'fetchTags' });
   }
 
   render() {
-    const { monitor } = this.props;
-    const { tags } = monitor;
+    console.log('%c@@@ Monitor', 'color:green; border:1px solid green;');
+    // const { monitor } = this.props;
+    // const { tags } = monitor;
+
+    const { tags } = this.state;
 
     return (
       <div>

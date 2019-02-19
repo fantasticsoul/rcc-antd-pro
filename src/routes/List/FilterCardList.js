@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import numeral from 'numeral';
 import { connect } from 'dva';
+import cc from 'react-control-center';
 import { routerRedux } from 'dva/router';
 import { Row, Col, Form, Card, Select, Icon, Avatar, List, Tooltip, Input, Dropdown, Menu } from 'antd';
 
@@ -26,18 +27,20 @@ const formatWan = (val) => {
 };
 
 /* eslint react/no-array-index-key: 0 */
+@cc.connect('FilterCardList', { 'list/*': '' }, { module: 'list', isSingle: true, extendInputClass: false })
 @Form.create()
-@connect(state => ({
-  list: state.list,
-}))
+// @connect(state => ({
+//   list: state.list,
+// }))
 export default class FilterCardList extends PureComponent {
   componentDidMount() {
-    this.props.dispatch({
-      type: 'list/fetch',
-      payload: {
-        count: 8,
-      },
-    });
+    // this.props.dispatch({
+    //   type: 'list/fetch',
+    //   payload: {
+    //     count: 8,
+    //   },
+    // });
+    this.props.$$dispatch({ type: 'fetch', payload: { count: 8 } });
   }
 
   handleFormSubmit = () => {
@@ -47,12 +50,13 @@ export default class FilterCardList extends PureComponent {
       form.validateFields((err) => {
         if (!err) {
           // eslint-disable-next-line
-          dispatch({
-            type: 'list/fetch',
-            payload: {
-              count: 8,
-            },
-          });
+          // dispatch({
+          //   type: 'list/fetch',
+          //   payload: {
+          //     count: 8,
+          //   },
+          // });
+          this.props.$$dispatch({ type: 'fetch', payload: { count: 8 } });
         }
       });
     }, 0);
@@ -62,13 +66,16 @@ export default class FilterCardList extends PureComponent {
     const { dispatch } = this.props;
     switch (key) {
       case 'doc':
-        dispatch(routerRedux.push('/list/search'));
+        // dispatch(routerRedux.push('/list/search'));
+        __bindedDvaDispatch__(routerRedux.push('/list/search'));
         break;
       case 'app':
-        dispatch(routerRedux.push('/list/filter-card-list'));
+        // dispatch(routerRedux.push('/list/filter-card-list'));
+        __bindedDvaDispatch__(routerRedux.push('/list/filter-card-list'));
         break;
       case 'project':
-        dispatch(routerRedux.push('/list/cover-card-list'));
+        // dispatch(routerRedux.push('/list/cover-card-list'));
+        __bindedDvaDispatch__(routerRedux.push('/list/cover-card-list'));
         break;
       default:
         break;
@@ -76,8 +83,10 @@ export default class FilterCardList extends PureComponent {
   }
 
   render() {
-    const { list: { list, loading }, form } = this.props;
-    const { getFieldDecorator } = form;
+    console.log('%c@@@ FilterCardList', 'color:green;border:1px solid green;');
+    // const { list: { list, loading }, form } = this.props;
+    const { list, loading } = this.props.$$propState;
+    const { getFieldDecorator } = this.props.form;
 
     const tabList = [
       {

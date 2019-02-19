@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import { connect } from 'dva';
+import cc from 'react-control-center';
 import { routerRedux } from 'dva/router';
 import { Form, Card, Select, List, Tag, Icon, Avatar, Row, Col, Button, Input } from 'antd';
 
@@ -14,10 +15,11 @@ const FormItem = Form.Item;
 
 const pageSize = 5;
 
+@cc.connect('SearchList', { 'list/*': '' }, { module: 'list', isSingle: true, extendInputClass: false })
 @Form.create()
-@connect(state => ({
-  list: state.list,
-}))
+// @connect(state => ({
+//   list: state.list,
+// }))
 export default class SearchList extends Component {
   componentDidMount() {
     this.fetchMore();
@@ -31,25 +33,47 @@ export default class SearchList extends Component {
   }
 
   fetchMore = () => {
-    this.props.dispatch({
-      type: 'list/fetch',
-      payload: {
-        count: pageSize,
-      },
-    });
+    // this.props.dispatch({
+    //   type: 'list/fetch',
+    //   payload: {
+    //     count: pageSize,
+    //   },
+    // });
+    this.props.$$dispatch({ type: 'fetch', payload: { count: pageSize } });
+  }
+
+  handleFormSubmit = () => {
+    console.log('handleFormSubmit');
+    const { form, dispatch } = this.props;
+    // setTimeout 用于保证获取表单值是在所有表单字段更新完毕的时候
+    setTimeout(() => {
+      form.validateFields((err) => {
+        if (!err) {
+          this.props.$$dispatch({
+            type: 'fetch',
+            payload: {
+              count: 2,
+            },
+          });
+        }
+      });
+    }, 0);
   }
 
   handleTabChange = (key) => {
     const { dispatch } = this.props;
     switch (key) {
-      case 'docs':
-        dispatch(routerRedux.push('/list/search'));
+      case 'doc':
+        // dispatch(routerRedux.push('/list/search'));
+        __bindedDvaDispatch__(routerRedux.push('/list/search'));
         break;
       case 'app':
-        dispatch(routerRedux.push('/list/filter-card-list'));
+        // dispatch(routerRedux.push('/list/filter-card-list'));
+        __bindedDvaDispatch__(routerRedux.push('/list/filter-card-list'));
         break;
       case 'project':
-        dispatch(routerRedux.push('/list/cover-card-list'));
+        // dispatch(routerRedux.push('/list/cover-card-list'));
+        __bindedDvaDispatch__(routerRedux.push('/list/cover-card-list'));
         break;
       default:
         break;
@@ -57,8 +81,10 @@ export default class SearchList extends Component {
   }
 
   render() {
-    const { form, list: { list, loading } } = this.props;
-    const { getFieldDecorator } = form;
+    console.log('%c@@@ SearchList', 'color:green;border:1px solid green;');
+    // const { form, list: { list, loading } } = this.props;
+    const { list, loading } = this.props.$$propState;
+    const { getFieldDecorator } = this.props.form;
 
     const owners = [
       {
