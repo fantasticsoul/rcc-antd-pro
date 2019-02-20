@@ -53,7 +53,9 @@ export default class Analysis extends Component {
     // dispatch({
     //   type: 'chart/clear',
     // });
+
     // this.$$dispatch({ module: 'chart', type: 'clear' });
+    this.$$dispatch('chart/clear');
   }
 
   handleChangeSalesType = (e) => {

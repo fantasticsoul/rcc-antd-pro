@@ -1,7 +1,9 @@
 [English](./README.md) | 简体中文
 
 # Ant Design Pro Powered by [react-control-center](https://github.com/fantasticsoul/react-control-center)
-###注意哦! 此项目只是为了证明 [cc](https://github.com/fantasticsoul/react-control-center) 的弱入侵性和灵活性，我仅仅把两个路由级别的组件交给cc处理, ant pro任然完美工作起立了, 这两个路由文件是 `routes/Dashboard/Analysis.js` 和 `routes/Forms/Basic.js`.
+###注意哦! 此项目只是为了证明 [cc](https://github.com/fantasticsoul/react-control-center) 的弱入侵性和灵活性，antd-pro的所有路由组件都已cc化，它们的状态管理由react-control-center直接接管
+###src/models-cc展示了cc改变所有组件的状态是如此的简单和优雅
+###更有趣的是, 打开console，通过cc提供的顶层api直接操作数据改变视图吧^_^
 ---
 ### 同时我也新增了一个路由组件 `routes/Dashboard/CCState.js` 来展示cc强大能力, 这个组件还没有彻底写完，将会被持续更新的, 就像 [我为cc专门写的引导示例一样](https://github.com/fantasticsoul/rcc-simple-demo)，将会很快会为大家带来更多的精彩演示
 ---

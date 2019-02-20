@@ -30,11 +30,10 @@ export default class BasicForms extends PureComponent {
         //   type: 'form/submitRegularForm',
         //   payload: values,
         // });
-        this.props.$$dispatch({
-          module: 'form',
-          type: 'submitRegularForm',
-          payload: values,
-        });
+
+        // 两种等价的写法
+        // this.props.$$dispatch({ module: 'form', type: 'submitRegularForm', payload: values });
+        this.props.$$dispatch('form/submitRegularForm', values);
       }
     });
   }

@@ -1,5 +1,6 @@
 
 import { fakeSubmitForm } from '../../services/api';
+import { message } from 'antd';
 
 function* submitRegularForm({ dispatch, payload: params }) {
   dispatch({ module: 'form', type: 'changeRegularFormSubmitting', payload: true });

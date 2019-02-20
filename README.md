@@ -1,7 +1,9 @@
 English | [简体中文](./README.zh-CN.md)
 
 # Ant Design Pro Powered by [react-control-center](https://github.com/fantasticsoul/react-control-center)
-### be attention! to prove [cc](https://github.com/fantasticsoul/react-control-center) is very progressive and flexible, I just change two route component from dva mode to cc mode, and it works still perfectly, they are `routes/Dashboard/Analysis.js` and `routes/Forms/Basic.js`.
+### be attention! to prove [cc](https://github.com/fantasticsoul/react-control-center) is very progressive and flexible, all the route components has been wrapped by cc
+### src/models-cc show how cc change different module's state.
+### one more interesting thing, open your console directly in browser, and pay with cc's top api to change all the component's view^_^
 ---
 ### and I add a new route component `routes/Dashboard/CCState.js` to show cc's powerful ability, this component will been updated continuously, just like [my quick start demo for cc](https://github.com/fantasticsoul/rcc-simple-demo), it will give you more wonderful case soon.
 ---
