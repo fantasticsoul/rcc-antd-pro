@@ -1,7 +1,7 @@
-import _reducer from './reducer';
-import _state from './state';
+import reducer from './reducer';
+import state from './state';
 
 export default {
-  reducer: _reducer,
-  state: _state,
+  reducer,
+  state,
 }

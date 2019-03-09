@@ -4,7 +4,7 @@ import {
   ChartCard, yuan, MiniArea, MiniBar, MiniProgress, Field, Bar, Pie, TimelineChart,
 } from '../../components/Charts';
 import styles from './Analysis.less';
-import cc from 'react-control-center';
+import cc, { CcFragment } from 'react-control-center';
 
 function getIconGroup() {
   const menu = (
@@ -25,7 +25,7 @@ function getIconGroup() {
 }
 const iconGroup = getIconGroup();
 
-@cc.connect('CcStage', { 'chart/*': '' }, { module: 'ccStage', sharedStateKeys:'*', isSingle:true })
+@cc.connect('CcStage', { 'chart/*': '' }, { module: 'ccStage', sharedStateKeys: '*', isSingle: true })
 export default class CcStage extends Component {
 
   state = {
@@ -93,6 +93,15 @@ export default class CcStage extends Component {
                 height={248}
                 lineWidth={4}
               />
+              <CcFragment connect={{ 'ccStage/*': '' }}>
+                {
+                  ({ propState }) => (
+                    <div>
+                      {propState.ccStage.inputValue}
+                    </div>
+                  )
+                }
+              </CcFragment>
             </Card>
           </Col>
         </Row>
