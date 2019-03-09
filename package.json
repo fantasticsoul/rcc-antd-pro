@@ -37,7 +37,7 @@
     "qs": "^6.5.0",
     "react": "^16.0.0",
     "react-container-query": "^0.9.1",
-    "react-control-center": "^1.1.60",
+    "react-control-center": "^1.1.68",
     "react-document-title": "^2.0.3",
     "react-dom": "^16.0.0",
     "react-fittext": "^1.0.0",
